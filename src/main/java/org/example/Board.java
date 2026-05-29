@@ -67,4 +67,8 @@ public class Board {
             }
         }
     }
+
+    public char getCell(int x, int y) {
+        return cells[x][y];
+    }
 }
