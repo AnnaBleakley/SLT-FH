@@ -65,4 +65,9 @@ public class TicTacToe {
 
         return false;
     }
+// User Story #2
+    public void showBoard() {
+        board.print();
+    }
+
 }
