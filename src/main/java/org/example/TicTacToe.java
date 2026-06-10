@@ -6,12 +6,14 @@ public class TicTacToe {
     private Player player2;
     private Player currentPlayer;
     private Board board;
+    private GameState gameState;
 
     public TicTacToe() {
         player1 = new Player('X');
         player2 = new Player('O');
         currentPlayer = player1;
         board = new Board();
+        gameState = GameState.IN_PROGRESS;
     }
 
     public void start() {
@@ -66,16 +68,51 @@ public class TicTacToe {
         return false;
     }
 
+    //helper methods to support unit tests
+
+    public boolean isGameOver() {
+        return gameState != GameState.IN_PROGRESS;
+    }
+
+
+    public char getCurrentPlayerMarker() {
+        return currentPlayer.getMarker();
+    }
+
+    public boolean isDraw() {
+        return gameState == GameState.DRAW;
+    }
+
+    public char getWinnerMarker() {
+        if (gameState == GameState.X_WON) {
+            return 'X';
+        }
+        if (gameState == GameState.O_WON) {
+            return 'O';
+        }
+            return '\0';
+        }
+
     public char getCell(int x, int y) {
         return board.getCell(x, y);
     }
+
 // User Story #2
     public void showBoard() {
+        if (isGameOver()) {
+            return;
+        }
+
         board.print();
     }
 
 //User Story #1
     public boolean makeMove(int x, int y){
+        if (isGameOver()) {
+            System.out.println("The game has already ended.");
+            return false;
+        }
+
         if (x < 0 || x > 2 || y < 0 || y > 2) {
             System.out.println("Invalid position. Please choose x and y between 0 and 2.");
             return false;
@@ -88,9 +125,45 @@ public class TicTacToe {
 
         board.place(x, y, currentPlayer.getMarker());
 
+        if (hasWinner()) {
+            if (currentPlayer.getMarker() == 'X') {
+                gameState = GameState.X_WON;
+            } else {
+                gameState = GameState.O_WON;
+            }
+
+            printGameResult();
+            return true;
+        } else if (board.isFull()) {
+            gameState = GameState.DRAW;
+            printGameResult();
+            return true;
+        }
+
         switchCurrentPlayer();
 
         return true;
     }
+    // User Story #3
+    public void printGameResult() {
+
+        if (gameState == GameState.X_WON) {
+            System.out.println("""
+█▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█   ▀▄▀   █░█░█ █▀█ █▄░█   █▀█ █░░ █▀█ █▄█ █▀▀ █▀█   █▀█   █░░ █▀█ █▀ ▀█▀
+█▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄   █░█   ▀▄▀▄▀ █▄█ █░▀█   █▀▀ █▄▄ █▄█ ░█░ ██▄ █▀▄   █▄█   █▄▄ █▄█ ▄█ ░█░
+""");
+        } else if (gameState == GameState.O_WON) {
+            System.out.println("""
+█▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█   █▀█   █░█░█ █▀█ █▄░█   █▀█ █░░ █▀█ █▄█ █▀▀ █▀█   ▀▄▀   █░░ █▀█ █▀ ▀█▀
+█▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄   █▄█   ▀▄▀▄▀ █▄█ █░▀█   █▀▀ █▄▄ █▄█ ░█░ ██▄ █▀▄   █░█   █▄▄ █▄█ ▄█ ░█░
+""");
+        } else if (gameState == GameState.DRAW) {
+            System.out.println("""
+█▀▄ █▀█ ▄▀█ █░█░█
+█▄▀ █▀▄ █▀█ ▀▄▀▄▀
+""");
+        }
+    }
+
 
 }
