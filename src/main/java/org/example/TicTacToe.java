@@ -65,9 +65,32 @@ public class TicTacToe {
 
         return false;
     }
+
+    public char getCell(int x, int y) {
+        return board.getCell(x, y);
+    }
 // User Story #2
     public void showBoard() {
         board.print();
+    }
+
+//User Story #1
+    public boolean makeMove(int x, int y){
+        if (x < 0 || x > 2 || y < 0 || y > 2) {
+            System.out.println("Invalid position. Please choose x and y between 0 and 2.");
+            return false;
+        }
+
+        if (board.isCellEmpty(x, y) == false) {
+            System.out.println("This square is already taken.");
+            return false;
+        }
+
+        board.place(x, y, currentPlayer.getMarker());
+
+        switchCurrentPlayer();
+
+        return true;
     }
 
 }
