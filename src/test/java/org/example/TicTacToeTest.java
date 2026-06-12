@@ -120,4 +120,70 @@ class TicTacToeTest {
         assertFalse(result);
         assertEquals('\0', game.getCell(2, 2));
     }
-}
+
+        @Test
+        public void startNewGameClearsBoard() {
+            TicTacToe game = new TicTacToe();
+
+            game.getBoard().place(0, 0, 'X');
+            game.getBoard().place(1, 1, 'O');
+
+            game.startNewGame();
+
+            assertTrue(game.getBoard().isCellEmpty(0, 0));
+            assertTrue(game.getBoard().isCellEmpty(1, 1));
+        }
+
+        @Test
+        public void startNewGameSetsCurrentPlayerToX() {
+            TicTacToe game = new TicTacToe();
+
+            game.switchCurrentPlayer();
+
+            game.startNewGame();
+
+            assertEquals('X', game.getCurrentPlayer().getMarker());
+        }
+    @Test
+    void startNewGameSetsGameStateToInProgress() {
+        TicTacToe game = new TicTacToe();
+
+        game.makeMove(0, 0);
+        game.makeMove(1, 0);
+        game.makeMove(0, 1);
+        game.makeMove(1, 1);
+        game.makeMove(0, 2); // X wins
+
+        game.startNewGame();
+
+        assertFalse(game.isGameOver());
+    }
+    @Test
+    void showBoardShouldPrintCurrentBoard() {
+        TicTacToe game = new TicTacToe();
+
+        game.makeMove(1, 1);
+
+        java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(output));
+
+        game.showBoard();
+
+        String printedText = output.toString();
+
+        assertTrue(printedText.contains("X"));
+    }
+    @Test
+    void showBoardShouldPrintEmptyBoard() {
+        TicTacToe game = new TicTacToe();
+
+        java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(output));
+
+        game.showBoard();
+
+        String printedText = output.toString();
+
+        assertFalse(printedText.isEmpty());
+    }
+    }
