@@ -164,6 +164,20 @@ public class TicTacToe {
 """);
         }
     }
+    // User Story #4
+    public void startNewGame() {
+        board.clear();
+        currentPlayer = player1;
+        gameState = GameState.IN_PROGRESS;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
 
 }

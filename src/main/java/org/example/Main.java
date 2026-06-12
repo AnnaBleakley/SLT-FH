@@ -13,31 +13,42 @@ public class Main {
                 ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   ░█░ █ █▄▄   ░█░ █▀█ █▄▄   ░█░ █▄█ ██▄
                 """);
         System.out.println();
+        boolean playAgain = true;
 
-        game.showBoard();
+        while (playAgain) {
 
-        while (!game.isGameOver()) {
-            System.out.println();
-            System.out.println("Player " + game.getCurrentPlayerMarker() + "'s turn.");
+            game.showBoard();
 
-            System.out.print("Choose x position between 0 and 2: ");
-            int x = scanner.nextInt();
+            while (!game.isGameOver()) {
 
-            System.out.print("Choose y position between 0 and 2: ");
-            int y = scanner.nextInt();
-
-            boolean moveSuccessful = game.makeMove(x, y);
-
-            if (moveSuccessful && !game.isGameOver()) {
                 System.out.println();
-                game.showBoard();
+                System.out.println("Player " + game.getCurrentPlayerMarker() + "'s turn.");
+
+                System.out.print("Choose x position between 0 and 2: ");
+                int x = scanner.nextInt();
+
+                System.out.print("Choose y position between 0 and 2: ");
+                int y = scanner.nextInt();
+
+                boolean moveSuccessful = game.makeMove(x, y);
+
+                if (moveSuccessful && !game.isGameOver()) {
+                    System.out.println();
+                    game.showBoard();
+                }
+            }
+
+            System.out.println();
+            System.out.print("Start a new game? (y/n): ");
+            String answer = scanner.next();
+
+            if (answer.equalsIgnoreCase("y")) {
+                game.startNewGame();
+            } else {
+                playAgain = false;
             }
         }
+
         scanner.close();
     }
 }
-
-
-
-
-
